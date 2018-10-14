@@ -1,0 +1,68 @@
+Week 1 Day 3 :
+
+# Exercise : Creating and Adding List View
+
+    1. To Create LISTVIEW, goto Page Configuration >> pcf >> Crete your Listview file here (it might already be exisiting..)
+    2. First add  Row Iterator >> Add row >> Add cells as per your requirement
+    3. Validation for RowIterator : 
+            
+            Select Row Iterator : 
+                enter editable : true;
+                
+                        Add a required variable,  ListView >> Required Varaibles Tab >> + >> Name and Type : Of entity (ABContact)
+                
+                        toAdd : requiredVariable.addToInteractions(rowIteratorName)
+                        toRemove :requiredVariable.removeFromInteractions(rowIteratorName)
+                        value : requiredVariableName.interactions()
+                        
+            Select first cell
+            
+                        Give params requierd 
+                        
+                        id, label
+                        
+                        value : requierdVaribaleName.Interaction_date (to which field to point to)
+                        
+            Select second and third cell
+            
+                        Repeat the above steps
+                        
+                        
+
+    4. Goto required page where you want to add the above PCF    
+    5. Select panel reference >>
+        def : ListViewName(requiredVariableName)
+        Validate
+        
+        
+    It might require Toobar, add it accordingly
+    
+    
+    #Exercise : Modes
+    
+        PCF >> Create a folder >> Create new PCF File >> Select InputSet Give Mode Here ie the Entity to point to.
+        
+        First add required varaibles to Inputset.
+        
+        Then add the widgets you want. 
+        
+            Give id, Label and in value give something like : (inputsetRequiredVariable as ABAutoRepairShop).IsFranchise
+            
+            Create multiple PCFs for drop down with same name and requiredVariableName
+            
+        Create DropDown PCF InputSet
+            Add required variable name
+            Add Input set reference
+            In def : pass the name of input set which we have created (pass the required variable of this inputset)
+            
+            In Mode : requiredVariableOfInputset.Subtype
+            
+            
+            
+    # Exercise LOcations : 
+    
+        Open UI >> Alt shift E >> Open teh requird PCF >> Track down the field >> Open the menu of properties 
+        
+        In action >> specify the page you want to go 
+        
+        

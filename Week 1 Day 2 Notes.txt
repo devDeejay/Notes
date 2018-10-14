@@ -1,0 +1,56 @@
+Atomic Widgets :
+
+    PCF 
+    
+        Widgets
+            
+            Atomic Widget
+                - Its an interface to display individual values
+                Or Individual Actions
+            
+                - Every atomic thing is atomic widget
+               
+            Container Widget
+                - 
+                
+        
+        Location
+        
+        
+        
+    Variables 
+    
+        - Noraml / Local variable
+                - That exists within one PCFs
+                
+        - Required / Global variable
+                - That exists between two PCFs
+                
+                
+    How to create new pcf ?
+    
+        - configuration >> Page Configuartion >> right click >> New File >> Right Click on that >> New PCF File 
+        
+                    Select the Widgets you want, give name to your PCF
+                    You will get a blank screen
+                    Search on the right panel, the name of widget you want to add.
+                        - Detail View
+                        - Add a label
+                        - Add email
+                        - Add Input
+                        
+                    Add one Required Variable
+                        - Name 
+                        - Type 
+                        
+                    GoBack To Properties Tab, << add the "value" = name of the required variable >> . << the property you want >>
+                    
+                    
+        - Add innput set reference
+            - give DEF to the PCF you created 
+            - give id, click save, it will come 
+            
+            
+            DAY 2 DONE
+            
+            

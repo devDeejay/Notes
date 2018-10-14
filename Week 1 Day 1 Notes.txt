@@ -1,0 +1,105 @@
+1. Data Model :
+
+    1. Entities
+        - Model Classes for Database
+        - They Have subtype also
+            - For parent to access child fields, we need to TypeCase using 'as' keyword, VICE VERSA
+            - All subtypes are stored in one table
+    
+    2. Entity Fields
+    
+        - Single property name is called Entity Field, which holds the state
+        - It has 4 Data Types
+            - Data
+                    * A String, DateTime, Boolean, Integer
+                    * Virutal and Physical Datafield
+        
+            - Foriegn Key
+                    * Stores a reference to related Object
+            
+            - Array Key
+                    * Stores a reference to set of related objects to data model
+                     {Stores set of related Data Fields}
+            
+            - Type Key
+                    * Stores the refernce to TypeList in an Entity
+                            
+        
+    3. TypeLists
+    
+        - Typelist is like a drop down listt
+                                * TypeCode is one particular value/row
+                                * Typelist consists of TypeCode
+                                
+                                
+2. Data Backup Creation 
+
+
+
+##############################################################################################################################
+
+Day 1 :
+
+    1.1. Guidewire Configuration
+    
+        - Start TrainingApp
+        - Goto Search Tab and search whatever is required
+        
+        - To Create new contact
+        
+            >> Actions >> New Person >> Vendor >> Law Firm
+            
+                - Give the required details
+                - Give TaxId
+                - Click on Update
+                
+       - To Create new company, follow above steps just choose the right Vendor
+       
+    1.20. DataModel
+    
+        - Data Dictionary is like a Backup
+        - Alt Shift E to Open PCF
+    
+    
+    1.30 Adding Fields
+    
+        - Open your ETX file
+        - On the left panel Click on + , Select Column
+        - Enter the name and size
+        
+        - Right click on the entity and Add New >> column param
+        - Give the name and other required value
+    
+    1.40 Extending Entity
+    
+        - Right click on Entity >> New Entity >> Enter the name of the new entity, Define Table and Type
+        - Add + Forign Key >> Give Name of FK, Give Reference to which Entity you want to refer to
+        
+        - Type Retirable means it will expire after a while
+        
+        - Add A column
+            - Rigth click on column, add foreign key 
+            - give FKEntity to User
+            
+    1.50 
+    
+        - Follow the above steps just select SUbtype while extending anotehr entity and define the super entity
+        -  For verificiation :
+        
+            - TA >> build >> dictionary >> data >> full 
+                - datamodel file would be here
+    
+    1.60
+    
+        - Add Bronze Typecode
+        - Change priority
+        
+        - To add TypeList
+        
+            >> Extensions >> Typelist >> right click >> new typelist 
+            >> Then add the required params from the LEFT PANEL ie the TYPECODES
+            
+    1.70
+    
+        - UI Architecture
+        - Alt Shift E, Make changes to PCF

@@ -1,0 +1,31 @@
+POLICY CENTER
+
+    Go to Product Designer >> bin >> launch PD
+    Login su gwgw
+    Sytem Tables - contains XML Files
+        Open uw_issue_types.xml
+        Click Add,  
+        
+            Add an underwriter issue >>
+            
+                Give Code, Name, Desc and copy most of the exisiting values there only.
+                Click OK
+                
+                Search it in the XML Files, Open it >> Validate
+                
+                Goto Top most right SAVE BUTTON >> Commit All 
+                Open settings button >> Sychronise system tables >> authenticate yourself
+                
+                
+                
+                GOTO PC : 
+                
+                    CTRL SHIFT N >> PA_UnderwriterEvaluator.gs
+                    Copy Paste the exisitng methods and cahnge the name
+                    
+                    Inside Display.properties 
+                    
+                        Add constant strings which would be used by your methods defiend above
+                        
+                    Back to PA_UnderwriterEvaluator inside doPrequote() call your method 
+                    

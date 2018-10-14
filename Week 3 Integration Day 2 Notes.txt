@@ -1,0 +1,374 @@
+
+***************************MESSAGING*************************** 
+
+1. The entity must be event aware
+
+    OUTBOUND MESSAGING :
+
+        - Added
+        - Changed
+        - Removed
+
+        -> messaging-config.xml 
+             - we create a destination id record (which has to be unique) (1 - 63)
+                - for each destination id you can have multiple events for a single dest ID
+
+        -> MessagingContext.Root : The whole parent Entity which is calling the messageContext
+
+        -> Rule Set : Set of rules, one basis of which actions will be done on firing that event
+
+                - Check Destination
+                - Check Entity
+                - Perform Action on some Conditions
+
+                    - In Action you will be building the XML ???
+                    - Transportaion Request >> Mesage Queue >> On Acknowledgement its process by reply ???
+
+
+                - Create Message Functions () creates the payload
+                - Payload goes to RequestTransport Plugin
+                    - Each payload has an XML, which has a message, which has transsactional message and a header (source and       destination information).
+
+                    - Transport Plugin has a send() method which sends it to messageQueue
+
+                    - In Message Queue, Its processed and is acknowledged
+                    
+    INBOUND MESSAGING :
+
+        -> Message will be available in the message queue, process it and generate and Acknowledge
+        -> Startable Plugin - Reads the message from inbound message queue
+        -> Message Reply - To drop a reply message, we use inbound integration message reply (If sender is not fire and forget)
+        
+        -> InboundIntegrationConfig.xml : We have to manually configure it : How thread has to behave we have to configure it here. 
+        
+        -> 3 Names of Threadpool : GW_Default (generally use this one), Webspehere and WebLogic
+        -> 2 Types of Threadpool : 
+        
+                FORKJOIN (for default threadpool ) and 
+                
+                COMMONJ (used for Websphere and WebLogic)
+        
+        -> THREE TYPES OF INTEGRATION :
+        
+            1. File Inbound Integration
+            
+                    - <tags> you have to manually code
+                    - PluginHandler
+                    - Polling : reading the next message,
+                    - Polling Interval : how long to wait before reading next message (Why default value is 60? because Transaction Timeout is 90)
+                    - (There is one batch server that handles all the plugins)
+                    
+                        
+            2. JMS Inbound Integration
+                    
+                    - 6 Tags are different from the above one
+                    
+                    - <connectionFacotyJNDI> - Queue manager name
+                    - <destinationJndi> 
+                    
+                    - There is a batch limit
+                    - Requires authentication
+                    - Message Recieve timeout
+            
+            3.  Custom Inbound Integration
+            
+                    - Uses Java not GoSu
+                    
+        
+2. 
+
+ Exercise 1 :
+ 
+    1. Created a package which will contain your GoSu Class (gsrc >> gw)
+    
+    2. Create a GoSu Class Inside it
+    
+        Implement MessageTransport Interface <- Import this 
+        
+            Implement the methods
+            
+    3. Config >> Plugins >> Registry 
+    
+        - Right click to create a new Plugin
+        - Give name and implement the interface MessageTransport
+        - Click on + icon, give the GoSU Class name which you just created above
+    
+    4. Open messaging-config.xml
+    
+        - Click +
+        - On the right panel, give ID (destination ID), Name (any meaningful name)
+        - In Transport Plugin, give the plugin name which you created above
+        - Scroll down and click on +
+        - Rename the 'event' to your event name
+        
+    5. Open Rule Sets (config >> rule sets >> eventFired) 
+    
+        - Right Click To Add new rule
+        - Add one parent rule
+        - Add one child rule
+    
+        - Edit Parent Rule
+            - return messageContext.DestID == 3 (Your id)
+            - nothing in action
+            
+        - Edit Child Rule
+            - return messageContext.EventName == "event_name"
+            - Inside Action print("Your")
+        
+    Now Run it, debug the server.. All Done!
+    
+*************************** WEB SERVICES *************************** 
+    
+    Publishing : 
+
+        Create an API Class
+        Annotation WSIWebservice
+        Regenrage Local WSDL
+            - Command Line  gwpc regen-local 
+            - Through Browsers
+        Get the WSDL
+        
+    Consuming :
+    
+        Create the collection consuming class
+        Get the WSDL : Add resources >> Fetch Updates gets you the WSDL, You get the XSD
+        
+    GX : 
+        POGO Classes
+        Entity Enhancement    
+        
+        
+DAY 3 :
+
+
+    G-UNIT : Test based class to test Functionalitites.
+    Extends a class called TestBase
+    Runs on seperate server
+    Validation of functionalities can be for positive and negative test cases
+    
+    
+     -> Right Click on test package >> Test
+     -> Test Class name must end with Test
+     -> Function name must start with 'test' for ex : testOnePlusTwoEqualsThree()
+     -> Create an object using Builders
+     -> Call the function and pass the object to test
+     
+        - assertTrue
+        - assertEquals
+        - assertNull
+        - assertNotNull
+        - And others
+        
+          (what you have to print in exception, actual result, expected result)
+          
+          exception occurs if result doesnt match with the expected result
+          
+          
+     -> Test Execution Needs : 
+                        
+                        Regression Test
+                        Functional Areas
+                        Local Testing
+                        Continuous Integration Testing
+                        
+                        
+    AUTHENTICATION :
+
+                User Authentication
+                    - User or WebService Authentication communicating with GW needs authentication
+
+                Datbase Authenticaion
+                    - GW Database modification can be done be authenticated user only
+
+        STEP 1 : Authentication Source Creator Plugin
+        
+            Creates the source for authentication
+            ie the key value pair    
+        
+                    - see the class BasicAuthentictionSourceCreatroPlugin
+                    - createSourceFromHTTPRequest (request : RequestType) {
+                            is the method used to 
+                    }
+                    
+    
+        
+        STEP 2 : Authentication Service Plugin
+        
+            Service plugin validates the key value pair data
+            Authenticates... if validated, it will login the user
+            
+            
+###############################################################################################################################
+        
+    SOAP UI : 
+    
+            - For publishing and consuming services manually, you can use SOAP UI
+            - Maintainence Tool
+            
+                STEP 1 : File >> New SOAP Project >> Give WSDL URUL >> Check Create sample request for all operation >> Press OK
+                
+                STEP 2 : 11 / 12th Binding 
+                
+                
+                
+                
+                
+##############################################################################################################################
+
+
+    GOSU Payloads
+    
+        1. configuration >> gsrc >> acme.ta >> right click >> new GX model >> refer to the entitiy say 'ABCompany'
+        
+        2. Wait to open 
+        
+        3. Add the required column name from left panel to right as Key Property
+        
+        4. In the bottom panel your gx XML is created.
+        
+        5. goto messaging-config 
+        
+        6. Add new config >> Give name, Destination ID, Transport Plugin Also (DefaultPrintToConsoleTransport)>> Add event name ABContactAdded
+        
+        7. Add RuleSet >> New Rule >> ABCompanyAdded 
+        
+                Edit the parent rule >> set condition to Destination ID 
+                
+                Open Child Rule 
+                    in Condition :
+                        return messageContext.EventName == "ABContactAdded" and messageContext.Root typeis ABCompany
+                        
+                    in Action :
+                         var object = messageContext.Root as ABCompany
+                         var xml = new acme.ta.abcompanymodel.ABCompany(object)
+                         messageContext.createMessage(xml.asUTFString())
+                        
+                Run Server
+                
+                
+                
+
+##############################################################################################################################
+
+
+Consuming Exercise : 60
+
+                1. gsrc >> create a package 'WebService' >> Create a web service collection  'WebserviceCollection' >> Add resource >> Give the url of WSDL >> edit local host part  >> Press OK
+
+                2. Click on the url and Fetch Updates >> Then fetch resources
+
+                3. Ctrl Shift N >> " suit-config.xml " >> change the url attribute to the IPAddress of the WSDL provider 
+
+                4. Open scratch pad : Alt Shift S, 
+
+                    var object = new ClassName()
+                    print(obj.doesContactExists("213123"))
+
+                    It might need authentication, so you 
+
+    
+Publishing Exercise : 80 
+
+                1. Create a package inside GSRC names publishing pacakge
+                2. Create a GoSu class , give annotation @WsiWebService and @Exportable
+                3. No extension or Implementation
+                4. function methodTxId (aString : String) : Boolean {
+                    var object = Query.make(entity.ABCompany)
+                    obj.com
+                }
+
+                1. Give transaction Id
+
+
+                        PublishedAPIClass Class :
+
+                                        package PublishingDemo
+
+                                        uses gw.api.database.Query
+                                        uses gw.api.database.Relop
+
+                                        class DJPublishedAPI {
+                                          function methodTxId(inputTaxID: String): String {
+                                            var obj = Query.make(entity.ABCompany)
+                                            obj.compare(entity.ABCompany#TaxID, Relop.Equals, inputTaxID)
+                                            var result = obj.select().getAtMostOneRow()
+                                            return result
+                                          }
+
+                                          function saveSummaryNote(inputTransactionID: String): void {
+                                            if (inputTransactionID != null){
+                                              print(inputTransactionID)
+                                              gw.transaction.Transaction.runWithNewBundle(\bundle -> {
+                                                var note = new ContactNote()
+                                                note.Subject = "Externl Node"
+                                                note.Body = "54-023654"
+                                                note.ContactNoteType = "General"
+                                                // print(aString)
+                                                var query = Query.make(entity.ABContact)
+                                                var result = query.compare(ABContact#TaxID, Relop.Equals, inputTransactionID).select().AtMostOneRow
+                                                print(result.Name)
+                                                result.addToContactNotes(note)
+                                                bundle.commit()
+                                              }, "aapplegate"
+                                              )
+                                            }
+                                          }
+
+                                          function doesContactExist(txID: String): String {
+                                            var queryObj = gw.api.database.Query.make(entity.ABCompany)
+                                            queryObj.compare(entity.ABCompany#TaxID, Equals, txID)
+                                            var selectNumbers = queryObj.select().getAtMostOneRow()
+
+                                            var result1 = selectNumbers.NumberOfEmployees
+                                            var result2 = selectNumbers.EmployeeScore
+                                            var result3 = selectNumbers.AddressOwner.Address
+
+                                            return result1 + "," + result2 + "," + result3
+                                          }
+                                        }
+
+                        GOSU CLASS :
+                                var object = new DJPublishedAPI();
+                                print(object.methodTxId("54-0683626"))
+                                object.saveSummaryNote("54-0683626")
+                                var result = object.doesContactExist("54-0683626")
+                                print(result.split(","))
+
+
+#################################################################################################################################
+
+Batch Process
+
+    1. Open BtachProcessType.ttx
+    2. Add one typecode 
+            >> DEFINE Code , Name, Desc
+    
+            >> Then in left panel right click on ur typecode add new >> add categories >> Choose Doctor >>
+            
+            Choose BatchProcessTypeUsage In Left Panel, then     
+            
+                >> Choose Category APIRunnable
+                >> Schedulable
+                >> UIRunnable
+                
+    3. Create one package, and a class inside gsrc named ur batchprocess and it will extend BatchProcessBase
+    
+        - Implement the doWork() method, write the Code
+        - Then goto acme.ta.batch.ProcessesPlugin
+        - Change thest two lines in the file
+                case BatchProcessType.TC_DOCTORSPECIALITYUNSPECIFIED:
+                var myBatchProcess =  new DJDoctorSpecialityBatchProcess()
+                
+        - Goto Config >> Plugins >> Registry 
+        
+            1. Give PluginName and implement MessageTransport Interface
+            2. + Add new GoSu plugin >>  Give class name : acme.ta.batch.ProcessesPlugin
+            
+        - Run The Server
+            In the UI  'Alt Shift T' OR After Adding the user just run the command RunBatchProces DoctorUnspedifiedSpeaciality
+            Find your batch process and run it manually 
+            
+            
+
+        Create a contact with name and company nunber
+
